@@ -16,9 +16,9 @@
    - Основной - Process 2
    - Второй форк - Process 3
    
-4. Консольное приложение использующее неименованные каналы - [code.c](code.c)
+4. Консольное приложение использующее неименованные каналы - [code.c](4/code.c)
 5. Входной и выходной файл задаются с помощью первого и второго аргумента командной строки соответственно
 6. Работа с файлами осуществляется с помощью функций read и write
 7. Размер буфера равен 5000 байт
-8. Примеры входных файлов: [input1.txt](input1.txt), [input2.txt](input2.txt), [input3.txt](input3.txt), [input4.txt](input4.txt), [input5.txt](input5.txt)
-9. Результаты работы на примерах входных данных: [output1.txt](output1.txt), [output2.txt](output2.txt), [output3.txt](output3.txt), [output4.txt](output4.txt), [output5.txt](output5.txt)
+8. Примеры входных файлов: [4/input1.txt](4/input1.txt), [4/input2.txt](4/input2.txt), [4/input3.txt](4/input3.txt), [4/input4.txt](4/input4.txt), [4/input5.txt](4/input5.txt)
+9. Результаты работы на примерах входных данных: [4/output1.txt](4/output1.txt), [4/output2.txt](4/output2.txt), [4/output3.txt](4/output3.txt), [4/output4.txt](4/output4.txt), [4/output5.txt](4/output5.txt)
