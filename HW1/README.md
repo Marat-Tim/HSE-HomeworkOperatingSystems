@@ -20,5 +20,5 @@
 5. Входной и выходной файл задаются с помощью первого и второго аргумента командной строки соответственно
 6. Работа с файлами осуществляется с помощью функций read и write
 7. Размер буфера равен 5000 байт
-8. Примеры входных файлов: [4/input1.txt](4/input1.txt), [4/input2.txt](4/input2.txt), [4/input3.txt](4/input3.txt), [4/input4.txt](4/input4.txt), [4/input5.txt](4/input5.txt)
-9. Результаты работы на примерах входных данных: [4/output1.txt](4/output1.txt), [4/output2.txt](4/output2.txt), [4/output3.txt](4/output3.txt), [4/output4.txt](4/output4.txt), [4/output5.txt](4/output5.txt)
+8. Примеры входных файлов: [input/in1.txt](input/in1.txt), [input/in2.txt](input/in2.txt), [input/in3.txt](input/in3.txt), [input/in4.txt](input/in4.txt), [input/in5.txt](input/in5.txt)
+9. Результаты работы на примерах входных данных: [4/out1.txt](4/out1.txt), [4/out2.txt](4/out2.txt), [4/out3.txt](4/out3.txt), [4/out4.txt](4/out4.txt), [4/out5.txt](4/out5.txt)
