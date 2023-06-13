@@ -1,0 +1,6 @@
+#ifndef IHW4_UDPLIB_CONFIG_H_
+#define IHW4_UDPLIB_CONFIG_H_
+
+const int MAX_BUFFER_SIZE = 255;
+
+#endif//IHW4_UDPLIB_CONFIG_H_
