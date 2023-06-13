@@ -14,7 +14,7 @@ typedef struct ServerSocketStruct {
 } ServerSocket;
 
 void initServerSocket(ServerSocket *server_socket, uint16_t port) {
-    if ((server_socket->_fd = socket(AF_INET, SOCK_DGRAM, 0)) == -1) {
+    if ((server_socket->_fd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1) {
         perror("server socket() failed");
         exit(EXIT_FAILURE);
     }
@@ -24,19 +24,20 @@ void initServerSocket(ServerSocket *server_socket, uint16_t port) {
     server_addr.sin_port = htons(port);
     server_addr.sin_addr.s_addr = htonl(INADDR_ANY);
     server_socket->port = port;
-    if (bind(server_socket->_fd, (struct sockaddr *) &server_addr, sizeof(server_addr)) == -1) {
+    if (bind(server_socket->_fd, (struct sockaddr *) &server_addr, sizeof(server_addr)) < 0) {
         perror("server bind() failed");
         exit(EXIT_FAILURE);
     }
 }
 
-ssize_t sendTo(ServerSocket *server_socket, char *buffer, struct sockaddr *client_addr) {
+ssize_t sendTo(ServerSocket *server_socket, char *buffer, struct sockaddr_in *client_addr) {
     size_t buffer_size = strlen(buffer);
     if (buffer_size > MAX_BUFFER_SIZE) {
         perror("buffer larger than max");
         exit(EXIT_FAILURE);
     }
-    ssize_t send_char_count = sendto(server_socket->_fd, buffer, buffer_size, 0, client_addr, sizeof(*client_addr));
+    ssize_t send_char_count = sendto(server_socket->_fd, buffer, buffer_size, 0,
+               (const struct sockaddr *)client_addr, sizeof(*client_addr));
     if (send_char_count == -1) {
         perror("server sendto() failed, return -1");
         exit(EXIT_FAILURE);
@@ -49,10 +50,11 @@ ssize_t sendTo(ServerSocket *server_socket, char *buffer, struct sockaddr *clien
     return send_char_count;
 }
 
-ssize_t receiveFrom(ServerSocket *server_socket, char* buffer, struct sockaddr *client_addr) {
+ssize_t receiveFrom(ServerSocket *server_socket, char* buffer, struct sockaddr_in *client_addr) {
     socklen_t _;
-    ssize_t receive_char_count = recvfrom(server_socket->_fd, buffer, MAX_BUFFER_SIZE, 0, client_addr, &_);
-    if (receive_char_count == -1) {
+    ssize_t receive_char_count = recvfrom(server_socket->_fd, buffer, MAX_BUFFER_SIZE, 0,
+                 (struct sockaddr *)client_addr, &_);
+    if (receive_char_count < 0) {
         perror("server recvfrom() failed, return -1");
         exit(EXIT_FAILURE);
     }
