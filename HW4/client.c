@@ -7,6 +7,6 @@ int main(int argc, char** argv) {
     char buffer[100];
     int size = receiveFromServer(&socket, buffer);
     buffer[size] = '\0';
-    printf("server return %s", buffer);
+    printf("server return %s\n", buffer);
     closeClientSocket(&socket);
 }
