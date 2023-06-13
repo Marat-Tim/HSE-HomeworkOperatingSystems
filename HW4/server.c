@@ -4,9 +4,8 @@ int main(int argc, char** argv) {
     ServerSocket socket;
     initServerSocket(&socket, atoi(argv[1]));
     char buffer[100];
-    puts("server start");
     while (1) {
-        struct sockaddr client_addr;
+        struct sockaddr_in client_addr;
         int size = receiveFrom(&socket, buffer, &client_addr);
         buffer[size] = '\0';
         printf("received message = %s\n", buffer);

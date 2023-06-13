@@ -31,6 +31,14 @@ void initServerSocket(ServerSocket *server_socket, uint16_t port) {
 }
 
 ssize_t sendTo(ServerSocket *server_socket, char *buffer, struct sockaddr_in *client_addr) {
+    printf("client_addr->sin_addr.s_addr=%d\n"
+           "client_addr->sin_port=%d\n"
+           "client_addr->sin_zero=%s\n"
+           "client_addr->sin_family=%d\n",
+           client_addr->sin_addr.s_addr,
+           client_addr->sin_port,
+           client_addr->sin_zero,
+           client_addr->sin_family);
     size_t buffer_size = strlen(buffer);
     if (buffer_size > MAX_BUFFER_SIZE) {
         perror("buffer larger than max");
