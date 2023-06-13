@@ -46,7 +46,7 @@ ssize_t sendToServer(ClientSocket *client_socket, char *buffer) {
 }
 
 ssize_t receiveFromServer(ClientSocket *client_socket, char *buffer) {
-    socklen_t _;
+    socklen_t _ = sizeof(client_socket->_server_addr);
     ssize_t receive_char_count = recvfrom(client_socket->_fd, buffer, MAX_BUFFER_SIZE, 0,
                                           (struct sockaddr *)&client_socket->_server_addr, &_);
     if (receive_char_count == -1) {

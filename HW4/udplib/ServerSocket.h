@@ -14,7 +14,7 @@ typedef struct ServerSocketStruct {
 } ServerSocket;
 
 void initServerSocket(ServerSocket *server_socket, uint16_t port) {
-    if ((server_socket->_fd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1) {
+    if ((server_socket->_fd = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1) {
         perror("server socket() failed");
         exit(EXIT_FAILURE);
     }
@@ -31,14 +31,6 @@ void initServerSocket(ServerSocket *server_socket, uint16_t port) {
 }
 
 ssize_t sendTo(ServerSocket *server_socket, char *buffer, struct sockaddr_in *client_addr) {
-    printf("client_addr->sin_addr.s_addr=%d\n"
-           "client_addr->sin_port=%d\n"
-           "client_addr->sin_zero=%s\n"
-           "client_addr->sin_family=%d\n",
-           client_addr->sin_addr.s_addr,
-           client_addr->sin_port,
-           client_addr->sin_zero,
-           client_addr->sin_family);
     size_t buffer_size = strlen(buffer);
     if (buffer_size > MAX_BUFFER_SIZE) {
         perror("buffer larger than max");
@@ -59,7 +51,7 @@ ssize_t sendTo(ServerSocket *server_socket, char *buffer, struct sockaddr_in *cl
 }
 
 ssize_t receiveFrom(ServerSocket *server_socket, char* buffer, struct sockaddr_in *client_addr) {
-    socklen_t _;
+    socklen_t _ = sizeof(*client_addr);
     ssize_t receive_char_count = recvfrom(server_socket->_fd, buffer, MAX_BUFFER_SIZE, 0,
                  (struct sockaddr *)client_addr, &_);
     if (receive_char_count < 0) {

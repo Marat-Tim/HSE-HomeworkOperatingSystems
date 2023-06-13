@@ -3,6 +3,7 @@
 int main(int argc, char** argv) {
     ServerSocket socket;
     initServerSocket(&socket, atoi(argv[1]));
+    puts("");
     char buffer[100];
     while (1) {
         struct sockaddr_in client_addr;
