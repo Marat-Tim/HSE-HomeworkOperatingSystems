@@ -50,7 +50,7 @@ ssize_t sendTo(ServerSocket *server_socket, char *buffer, struct sockaddr_in *cl
     return send_char_count;
 }
 
-ssize_t receiveFrom(ServerSocket *server_socket, char* buffer, struct sockaddr_in *client_addr) {
+ssize_t receive(ServerSocket *server_socket, char* buffer, struct sockaddr_in *client_addr) {
     socklen_t _ = sizeof(*client_addr);
     ssize_t receive_char_count = recvfrom(server_socket->_fd, buffer, MAX_BUFFER_SIZE, 0,
                  (struct sockaddr *)client_addr, &_);
