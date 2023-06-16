@@ -1,3 +1,4 @@
-mkdir -p out
-gcc server.c -o out/server
-gcc client.c -o out/client
+DIR=./
+mkdir -p $DIR
+gcc server.c -o "$DIR/server.exe"
+gcc generator.c -o "$DIR/generator.exe"

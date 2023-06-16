@@ -54,8 +54,26 @@ void initialize(char *post, struct sockaddr_in addr) {
     }
 }
 
+bool isEquals(struct sockaddr_in addr1, struct sockaddr_in addr2) {
+    return addr1.sin_addr.s_addr == addr2.sin_addr.s_addr;
+}
+
+void processGenerator(char* message) {
+    if (rand() % 2 == 1) {
+        printf("Send patient %s to duty1\n", message);
+        sendTo(&socket1, message, &duty1.addr);
+    } else {
+        printf("Send patient %s to duty2\n", message);
+        sendTo(&socket1, message, &duty2.addr);
+    }
+}
+
 void process(char *message, struct sockaddr_in addr) {
-    printf("process %s from %d\n", message, addr.sin_addr.s_addr);
+    if (isEquals(addr, generator.addr)) {
+        processGenerator(message);
+    } else {
+        printf("Can't process message: %s\n", message);
+    }
 }
 
 int main(int argc, char **argv) {
@@ -65,9 +83,10 @@ int main(int argc, char **argv) {
         exit(EXIT_FAILURE);
     }
     initServerSocket(&socket1, atoi(argv[1]));
+    printf("Server start\n");
     char buffer[MAX_SIZE];
     struct sockaddr_in client_addr;
-    while (1) {
+    while (true) {
         int size = receive(&socket1, buffer, &client_addr);
         buffer[size] = '\0';
         if (!isInitialized()) {
