@@ -10,16 +10,7 @@ void ctrlCHandler(int signal) {
     exit(EXIT_SUCCESS);
 }
 
-int random_names_count = 8;
-char *random_names[] = {
-        "Captain America",
-        "Iron Man",
-        "Tor",
-        "Halk",
-        "Hokay",
-        "Warrior",
-        "Spider Man",
-        "Dr. Strange"};
+char *doctors[] = {"dentist", "surgeon", "therapist"};
 
 int main(int argc, char **argv) {
     signal(SIGINT, ctrlCHandler);
@@ -36,12 +27,18 @@ int main(int argc, char **argv) {
         exit(EXIT_FAILURE);
     }
     initClientSocket(&socket1, ip, port);
-    sendToServer(&socket1, "generator");
+    sendToServer(&socket1, "duty");
     printf("Send initializing message\n");
+    char received_buffer[100];
+    char buffer_to_send[200];
     while (true) {
-        char *random_name = random_names[rand() % random_names_count];
-        sendToServer(&socket1, random_name);
-        printf("Send %s to server\n", random_name);
-        sleep(1 + rand() % 5);
+        int size = receiveFromServer(&socket1, received_buffer);
+        received_buffer[size] = '\0';
+        printf("Receive %s from server\n", received_buffer);
+        char* name = received_buffer;
+        char* to_doctor = doctors[rand() % 3];
+        sprintf(buffer_to_send, "%s|%s", name, to_doctor);
+        printf("Process %s, send to %s doctor\n", name, to_doctor);
+        sendToServer(&socket1, buffer_to_send);
     }
 }

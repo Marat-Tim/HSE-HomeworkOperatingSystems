@@ -55,10 +55,11 @@ void initialize(char *post, struct sockaddr_in addr) {
 }
 
 bool isEquals(struct sockaddr_in addr1, struct sockaddr_in addr2) {
-    return addr1.sin_addr.s_addr == addr2.sin_addr.s_addr;
+    return addr1.sin_port == addr2.sin_port;
 }
 
-void processGenerator(char* message) {
+void processGenerator(char *message) {
+    printf("Receive patient %s from generator\n", message);
     if (rand() % 2 == 1) {
         printf("Send patient %s to duty1\n", message);
         sendTo(&socket1, message, &duty1.addr);
@@ -68,9 +69,19 @@ void processGenerator(char* message) {
     }
 }
 
+void processDuty(char *message, int number) {
+    char* name = strtok(message, "|");
+    char* to_doctor = strtok(NULL, " ");
+    printf("Receive patient %s from duty%d, send to %s\n", name, number, to_doctor);
+}
+
 void process(char *message, struct sockaddr_in addr) {
     if (isEquals(addr, generator.addr)) {
         processGenerator(message);
+    } else if (isEquals(addr, duty1.addr)) {
+        processDuty(message, 1);
+    } else if (isEquals(addr, duty2.addr)) {
+        processDuty(message, 2);
     } else {
         printf("Can't process message: %s\n", message);
     }
@@ -79,7 +90,7 @@ void process(char *message, struct sockaddr_in addr) {
 int main(int argc, char **argv) {
     signal(SIGINT, ctrlCHandler);
     if (argc != 2) {
-        printf("Usage: ./%s *port*", argv[0]);
+        printf("Usage: %s *port*\n", argv[0]);
         exit(EXIT_FAILURE);
     }
     initServerSocket(&socket1, atoi(argv[1]));
