@@ -72,7 +72,19 @@ void processGenerator(char *message) {
 void processDuty(char *message, int number) {
     char* name = strtok(message, "|");
     char* to_doctor = strtok(NULL, " ");
-    printf("Receive patient %s from duty%d, send to %s\n", name, number, to_doctor);
+    printf("Receive patient %s from duty%d", name, number);
+    if (strcmp(to_doctor, "therapist") == 0) {
+        sendTo(&socket1, name, &therapist.addr);
+    } else if (strcmp(to_doctor, "surgeon") == 0) {
+        sendTo(&socket1, name, &surgeon.addr);
+    } else if (strcmp(to_doctor, "dentist") == 0) {
+        sendTo(&socket1, name, &dentist.addr);
+    }
+    printf(", send to %s\n", to_doctor);
+}
+
+void processDoctor(char* message, char* post) {
+    printf("Receive healed patient %s from %s doctor\n", message, post);
 }
 
 void process(char *message, struct sockaddr_in addr) {
@@ -82,6 +94,12 @@ void process(char *message, struct sockaddr_in addr) {
         processDuty(message, 1);
     } else if (isEquals(addr, duty2.addr)) {
         processDuty(message, 2);
+    } else if (isEquals(addr, therapist.addr)) {
+        processDoctor(message, "therapist");
+    } else if (isEquals(addr, surgeon.addr)) {
+        processDoctor(message, "surgeon");
+    } else if (isEquals(addr, dentist.addr)) {
+        processDoctor(message, "dentist");
     } else {
         printf("Can't process message: %s\n", message);
     }
